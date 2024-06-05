@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #map {
+        height: 100%;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+<body>
+    <div id="map"></div>
+</body>
+<script>
+
+    const data = [
+        {
+            lat: 22.7224,
+            long: 75.8679,
+            name: 'Bhawarkua squre'
+        },
+        {
+            lat: 22.6978,
+            long: 75.8683,
+            name: 'DAVV squre'
+        },
+        {
+            lat: 22.7259,
+            long: 75.8796,
+            name: 'It park squre'
+        },
+
+
+    ]
+
+    function initMap() {
+        /**
+            * @type {google.maps.Map}
+            * @description Google Map instance centered at a specific location.
+            */
+        map = new google.maps.Map(document.getElementById('map'), {
+
+            center: { lat: 22.7196, lng: 75.8577 },
+            zoom: 15
+        });
+        let marker;
+        let langPlus = 75.8577
+        //   const interval =   setInterval(() => {
+        //     // Clear previous marker if exists
+        //     if (marker) {
+        //         marker.setMap(null);
+        //     }
+        //         console.log("called")
+        //     // Create a new marker with a slightly incremented longitude
+        //     langPlus += 0.001
+        //     marker = new google.maps.Marker({
+        //         position: { lat: 22.7196, lng: langPlus  }, // Adjust the increment as needed
+        //         map: map,
+        //         title: `Bus ${1}`,
+        //         icon: {
+        //             url: 'images.png', // Specify the URL of your custom marker image
+        //             scaledSize: new google.maps.Size(50, 50) // Set the size of the marker
+        //         }
+        //     });
+
+        // }, 1000);
+
+        // clearInterval(interval)
+
+            data.forEach(element => {
+            marker = new google.maps.Marker({
+            position: { lat: element.lat, lng: element.long  }, // Adjust the increment as needed
+            map: map,
+            title: `Bus ${1}`,
+            icon: {
+                url: 'images.png', // Specify the URL of your custom marker image
+                scaledSize: new google.maps.Size(50, 50) // Set the size of the marker
+            }
+        });
+            })
+
+        for (let i = 0; i < data.length - 1; i++) {
+
+            
+            const coordinates = [
+                { lat: data[i].lat, lng: data[i].long },
+                { lat: data[i + 1].lat, lng: data[i + 1].long }
+            ];
+
+            const line = new google.maps.Polyline({
+                path: coordinates,
+                geodesic: true,
+                strokeColor: 'black',
+                strokeOpacity: 3.0,
+                strokeWeight: 5
+            });
+
+            line.setMap(map);
+           
+        }
+    }
+
+
+    initMap()
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?callback=initMap&signed_in=true" async defer></script>
+
+</html>

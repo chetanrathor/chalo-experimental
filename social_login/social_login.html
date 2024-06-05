@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<body>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+</body>
+<script>
+    function onSignIn(googleUser) {
+    // Handle the sign-in process here
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send this directly to your server!
+    console.log('Name: ' + profile.getName());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+  }
+</script>
+</html>

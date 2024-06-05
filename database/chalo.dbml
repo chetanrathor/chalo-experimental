@@ -1,0 +1,153 @@
+Project Chalo {
+  database_type: 'PostgreSQL'
+  Note: '''
+    # Chalo Database design
+    **Pre Approved database design**
+  '''
+}
+
+Enum gender {
+    Male
+    Female
+    Other
+}
+
+Enum status {
+    Active
+    InActive
+}
+
+Enum user_plan_status{
+    Active
+    InActive
+    Expired
+}
+
+Enum user_plan_verification_status{
+    Pending
+    Verified
+    Rejected
+}
+
+
+
+Table countries as Countries {
+    id int [pk,increment]
+    name varchar
+    code varchar
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+
+}
+
+Table cities as Cities {
+    id int [pk,increment]
+    name varchar
+    country_code int [ref: > Countries.id]
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+Table languages as Languages {
+    id int [pk,increment]
+    name json
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+Table documents as Documents {
+    id int [pk,increment]
+    name varchar
+    maximum_size int
+    minimum_size int
+    formats json
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+Table plan_types as PlanTypes {
+    id int [pk,increment]
+    name varchar
+    order int
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+Table plan_days as PlanDays {
+   id int [pk,increment]
+   days int
+   status status
+   created_at timestamp
+   upated_at timestamp
+   delete_at timestamp
+}
+
+Table plans as Plans{
+    id int [pk, increment]
+    plan_type_id int [ref:> PlanTypes.id]
+    plan_day_id int [ref:> PlanDays.id]
+    price int
+    documents_required json [note: 'List of documents required'] 
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+
+
+Table users as Users {
+  id int [pk, increment]
+  first_name varchar
+  last_name varchar
+  phone varchar
+  email varchar
+  gender gender
+  avatar varchar
+  is_social_user boolean
+  social_login_id varchar
+  fcm_token varchar
+  preferred_city int [ref: > Cities.id]
+  language int [ref: > Languages.id]
+  status status 
+  created_at timestamp
+  upated_at timestamp
+  delete_at timestamp
+}
+
+Table user_documents as UserDocuments{
+    id int [pk, increment]
+    user_id int [ref:> Users.id]
+    document_id int [ref:>Documents.id]
+    verification_status verification_status
+    status status
+    created_at timestamp
+    upated_at timestamp
+    delete_at timestamp
+}
+
+
+
+Table users_plans as UsersPlans {
+    id int [pk, increment]
+    user_id int [ref:>Users.id]
+    plan_id int [ref: > Plans.id]
+    days int
+    price int
+    started_at timestamp
+    expired_at timestamp
+    status user_plan_status
+    verification_status user_plan_verification_status
+}
+
+
